@@ -1,1 +1,9 @@
-afgdfgsdgfv
+Libraries to be installed:
+
+Terminal commands are as follows:
+sudo apt-get update
+sudo apt-get install gphoto2
+sudo apt-get install python3-pip
+sudo pip3 install sh
+
+For more infomation watch this (https://www.youtube.com/watch?v=1eAYxnSU2aw) 
