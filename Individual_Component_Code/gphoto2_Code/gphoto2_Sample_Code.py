@@ -24,7 +24,8 @@ pictureID = "project No."
 
 clearCommand = ["--folder", "/store_00020001/DCIM/100CANON", "-R", "--delete-all-files"]  # This deletes the images on the camera's SD-card       
 triggerCommand = ["--trigger-capture"] # "--image-capture" <-- this is an alternative
-downloadCommand = ["--get-all-files"]
+downloadCommand = ["--get-all-files"] # This gets/downloads all files
+downloadJPG_Command = ["--get-file=2"]
 triggerAndDownload = ["--capture-image-and-download"]
 
 folder_name = shot_date
@@ -40,7 +41,8 @@ def createSaveFolder():
 def captureImages():
     gp(triggerCommand) # This executes the triggering of the camera
     time.sleep(3) # This is to take exposure time and such into account
-    gp(downloadCommand)
+    #gp(downloadCommand)
+    gp(downloadJPG_Command)
     #gp(triggerAndDownload)
     gp(clearCommand)
 
