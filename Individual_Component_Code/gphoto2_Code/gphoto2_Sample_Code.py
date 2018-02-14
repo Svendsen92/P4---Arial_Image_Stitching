@@ -38,10 +38,10 @@ def createSaveFolder():
     os.chdir(save_location)
 
 def captureImages():
-    #gp(triggerCommand) # This executes the triggering of the camera
-    #time.sleep(2) # This is to take exposure time and such into account
-    #gp(downloadCommand)
-    gp(triggerAndDownload)
+    gp(triggerCommand) # This executes the triggering of the camera
+    time.sleep(3) # This is to take exposure time and such into account
+    gp(downloadCommand)
+    #gp(triggerAndDownload)
     gp(clearCommand)
 
 def renameFiles(ID):
