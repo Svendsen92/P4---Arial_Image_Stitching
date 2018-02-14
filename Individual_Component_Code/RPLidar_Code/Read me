@@ -1,1 +1,7 @@
-dzbfdvbxf
+Libraries to be installed:
+
+Terminal commands are as follows:
+sudo apt-get update
+
+Install library for python 2 using pip: sudo pip install rplidar
+Install library for python 3 using pip: sudo pip3 install rplidar
