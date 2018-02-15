@@ -74,6 +74,8 @@ print(health)
 
 try:
     for measurment in lidar.iter_measurments():
+        key = raw_input()
+        
         line = '\n'.join(str(v) for v in measurment)
         newline = line.split("\n")
         BMP_altitude = sensor.read_altitude()
@@ -84,7 +86,6 @@ try:
             print ("Distance = " + newline[3])
             print ("Altitude = " + str(BMP_altitude) + '\n') 
 
-            key = raw_input()
             #if ((abs(BMP_altitude - previousBMP_altitude) > 0.85) and (abs(BMP_altitude - previousBMP_altitude) < 1.15):
             if (key == "t"):
                 killgphoto2Process()
