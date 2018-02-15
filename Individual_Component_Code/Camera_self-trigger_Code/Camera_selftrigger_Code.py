@@ -94,12 +94,12 @@ try:
                 renameFiles(pictureID + str(iteration))
                 logging.info('Image No.' + str (iteration) + '; Distance = ' + newline[3] + '; Altitude = ' +
                              str(BMP_altitude))
+                
                 iteration = iteration +1
                 previousBMP_altitude = BMP_altitude
+                key = ""
                 
-except key == "f":
-    pass
-
-lidar.stop()
-lidar.stop_motor()
-lidar.disconnect()
+except KeyboardInterrupt: # Press "Ctrl + c" to exit program
+    lidar.stop()
+    lidar.stop_motor()
+    lidar.disconnect()
