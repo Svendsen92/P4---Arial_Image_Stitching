@@ -1,3 +1,17 @@
+"""
+This class has two public functions. The first is the init() function it takes two arguments,
+1) A string that gives the picture an id,
+2) A string that contains the path to the folder where pictures are to be stored.
+The init() function sets up the envioriment needed to execute the second function.
+
+The second function is takePicture(), it does not take any arguments because everything
+already has been set up by the init() function. takePicture() delete all pictures in
+this folder "/store_00020001/DCIM/100CANON" on the camera, then it creates a folder at the specified
+location (specified in the init() function) unless there already is a folder there with the same name.
+It then takes the picture and downloads it to the created folder and thereafter the picture is renamed
+in acoordance with the specified pictureID (specified in the init() function). 
+"""
+
 import time
 from datetime import datetime
 from sh import gphoto2 as gp
@@ -12,12 +26,12 @@ triggerAndDownload = ["--capture-image-and-download"]
 
 ################## Image_manager class ########################
 class Image_manager():
-    def init(picID, saveFolderPath):
+    def init(picID, savePath):
         shot_date = datetime.now().strftime("%Y-%m-%d %H: %M: %S")
         shot_time = datetime.now().strftime("%Y-%m-%d %H: %M: %S")
         pictureID = picID
         folder_name = shot_date
-        save_location = saveFolderPath + folder_name   # this is: "location you want to create the folder with the pictures in"
+        save_location = savePath + folder_name   # this is: "location you want to create the folder with the pictures in"
         iteration = 0
 
     def takePicture():
@@ -33,7 +47,6 @@ class Image_manager():
 def killgphoto2Process():
     p = subprocess.Popen(['ps', '-A'], stdout = subprocess.PIPE)
     out, err = p.communicate()
-
     # This searches for the line that the process we want to kill
     for line in out.splitlines():
         if (b'gvfsd-gphoto2' in line):   # This is the name of the process that we want to kill
