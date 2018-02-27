@@ -4,7 +4,7 @@ This class has two public functions. The first is the init() function it takes t
 2) A string that contains the path to the folder where pictures are to be stored.
 The init() function sets up the envioriment needed to execute the second function.
 
-The second function is takePicture(), it does not take any arguments because everything
+The second function is aquirePicture(), it does not take any arguments because everything
 already has been set up by the init() function. takePicture() delete all pictures in
 this folder "/store_00020001/DCIM/100CANON" on the camera, then it creates a folder at the specified
 location (specified in the init() function) unless there already is a folder there with the same name.
@@ -26,6 +26,7 @@ triggerAndDownload = ["--capture-image-and-download"]
 
 ################## Image_manager class ########################
 class Image_manager():
+    
     def init(picID, savePath):
         shot_date = datetime.now().strftime("%Y-%m-%d %H: %M: %S")
         shot_time = datetime.now().strftime("%Y-%m-%d %H: %M: %S")
@@ -34,13 +35,17 @@ class Image_manager():
         save_location = savePath + folder_name   # this is: "location you want to create the folder with the pictures in"
         iteration = 0
 
-    def takePicture():
-        killgphoto2Process()
-        gp(clearCommand)
-        createSaveFolder()
-        captureImages()
-        renameFiles(pictureID + str(iteration))
-        iteration = iteration +1
+    def aquirePicture():
+        try:
+            killgphoto2Process()
+            gp(clearCommand)
+            createSaveFolder()
+            captureImages()
+            renameFiles(pictureID + str(iteration))
+            iteration = iteration +1
+            return (True) 
+        except:
+            return (False)            
 
 
 ################## Image_manager script #########################
@@ -58,7 +63,7 @@ def createSaveFolder():
     try:
         os.makedirs(save_location)
     except:
-        print ("Falied to create the new directory or One already exist")
+        #print ("Falied to create the new directory or One already exist")
     os.chdir(save_location)
 
 def captureImages():
