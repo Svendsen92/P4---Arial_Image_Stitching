@@ -5,10 +5,15 @@ from rplidar import RPLidar
 PORT_NAME = '/dev/ttyUSB0'
 
 class Lidar():
+    
     def init():
-        os.system('sudo chmod 666 /dev/ttyUSB0')
-        lidar = RPLidar(PORT_NAME)
-
+        try:
+            os.system('sudo chmod 666 /dev/ttyUSB0')
+            lidar = RPLidar(PORT_NAME)
+            return (True)
+        except:
+            return (False)
+            
     def measuredDistance():
         for measurment in lidar.iter_measurments():
             line = '\n'.join(str(v) for v in measurment)
