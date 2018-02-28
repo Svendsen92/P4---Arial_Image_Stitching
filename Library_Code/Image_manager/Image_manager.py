@@ -17,11 +17,11 @@ from datetime import datetime
 from sh import gphoto2 as _gp
 import signal, os, subprocess
 
-clearCommand = ["--folder", "/store_00020001/DCIM/100CANON", "-R", "--delete-all-files"]  # This deletes the images on the camera's SD-card       
-triggerCommand = ["--trigger-capture"] # "--image-capture" <-- this is an alternative
-downloadCommand = ["--get-all-files"] # This gets/downloads all files
-downloadJPG_Command = ["--get-file=2"]
-triggerAndDownload = ["--capture-image-and-download"]
+_clearCommand = ["--folder", "/store_00020001/DCIM/100CANON", "-R", "--delete-all-files"]  # This deletes the images on the camera's SD-card       
+_triggerCommand = ["--trigger-capture"] # "--image-capture" <-- this is an alternative
+_downloadCommand = ["--get-all-files"] # This gets/downloads all files
+_downloadJPG_Command = ["--get-file=2"]
+_triggerAndDownload = ["--capture-image-and-download"]
 
     
 def init(picID, savePath):
@@ -35,7 +35,7 @@ def init(picID, savePath):
 def aquirePicture():
     try:
         _killgphoto2Process()
-        _gp(clearCommand)
+        _gp(_clearCommand)
         _createSaveFolder()
         _captureImages()
         _renameFiles(pictureID + str(iteration))
@@ -61,10 +61,10 @@ def _createSaveFolder():
     os.chdir(save_location) # Directory already exists 
 
 def _captureImages():
-    _gp(triggerCommand)      
+    _gp(_triggerCommand)      
     time.sleep(3)           # This is to take exposure time and such into account
-    _gp(downloadJPG_Command) 
-    _gp(clearCommand)
+    _gp(_downloadJPG_Command) 
+    _gp(_clearCommand)
 
 def _renameFiles(ID):
     for filename in os.listdir("."):
