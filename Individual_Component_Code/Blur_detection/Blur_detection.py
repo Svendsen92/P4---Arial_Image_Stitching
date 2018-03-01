@@ -15,8 +15,10 @@ for k in range (1,9):
 
     resized_image = cv2.resize(adaptive_image, (0,0), fx=0.15, fy=0.15)
 
+    # Goes to thourgh each pixel position
     for i in range(resized_image.shape[0]):
         for j in range(resized_image.shape[1]):
+            # Evaluates the pixels' value
             if (resized_image[i,j] < 1):
                 blackPixel = blackPixel +1
                 
