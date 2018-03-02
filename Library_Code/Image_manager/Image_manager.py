@@ -19,9 +19,7 @@ import signal, os, subprocess
 
 clearCommand = ["--folder", "/store_00020001/DCIM/100CANON", "-R", "--delete-all-files"]  # This deletes the images on the camera's SD-card       
 triggerCommand = ["--trigger-capture"] # "--image-capture" <-- this is an alternative
-downloadCommand = ["--get-all-files"] # This gets/downloads all files
 downloadJPG_Command = ["--get-file=2"]
-triggerAndDownload = ["--capture-image-and-download"]
 
 class Image_manager:
     def __init__(self, picID, savePath):  
