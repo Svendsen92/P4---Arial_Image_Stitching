@@ -24,7 +24,7 @@ downloadJPG_Command = ["--get-file=2"]
 triggerAndDownload = ["--capture-image-and-download"]
 
 class Image_manager:
-    def init(picID, savePath):  
+    def __init__(self, picID, savePath):  
         shot_date = datetime.now().strftime("%Y-%m-%d %H: %M: %S")
         shot_time = datetime.now().strftime("%Y-%m-%d %H: %M: %S")
         pictureID = picID
@@ -113,7 +113,7 @@ def _blurDetection(ID):
 
 def _deleteImage(ID):
     # This function deletes an image depending on the ID given
-    os.remove(save_location + save_location + shot_time + ID + ".JPG")
+    os.remove(save_location + shot_time + ID + ".JPG")
     
 
 
