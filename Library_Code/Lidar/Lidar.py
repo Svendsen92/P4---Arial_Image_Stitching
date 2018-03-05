@@ -3,7 +3,6 @@ import time
 from rplidar import RPLidar
 
 PORT_NAME = '/dev/ttyUSB0'
-global dist
 
 class lidar:
     
@@ -11,14 +10,13 @@ class lidar:
         os.system('sudo chmod 666 /dev/ttyUSB0')
 
     def distance():
-        _measuredDistance()
-        if (dist > 0):
+        try:
+            dist = float(_measuredDistance())
             return (dist)
-        else:
-            _measuredDistance()
-
+        except:
+            _measureDistance()
+       
 def _measuredDistance():
-    global dist
     try:
         lidar = RPLidar(PORT_NAME)
         for measurment in lidar.iter_measurments():
@@ -26,11 +24,12 @@ def _measuredDistance():
             newline = line.split("\n")
             if ((float(newline[2]) > 0 and 0.3 > float(newline[2])) or
                 (float(newline[2]) > 359.7 and 360 > float(newline[2]))):
-                dist = float(newline[3]) / 10
+                distance = float(newline[3]) / 10
                 lidar.stop()
                 lidar.disconnect()
                 time.sleep(0.2)
                 break
+        return (distance)
     except:
         lidar.disconnect()
         time.sleep(0.2)
