@@ -1,17 +1,3 @@
-"""
-This module has two public functions. The first is the init() function it takes two arguments,
-1) A string that gives the picture an id,
-2) A string that contains the path to the folder where pictures are to be stored.
-The init() function sets up the envioriment needed to execute the second function.
-
-The second function is aquirePicture(), it does not take any arguments because everything
-already has been set up by the init() function. takePicture() delete all pictures in
-this folder "/store_00020001/DCIM/100CANON" on the camera, then it creates a folder at the specified
-location (specified in the init() function) unless there already is a folder there with the same name.
-It then takes the picture and downloads it to the created folder and thereafter the picture is renamed
-in acoordance with the specified pictureID (specified in the init() function). 
-"""
-
 import time
 import cv2
 from datetime import datetime
