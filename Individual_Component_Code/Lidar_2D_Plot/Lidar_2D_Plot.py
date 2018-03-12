@@ -8,13 +8,11 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from rplidar import RPLidar
 
-counter = 0
-preAngle = 0
 x = []
 y = []
+counter = 0
 
 os.system('sudo chmod 666 /dev/ttyUSB0')
-
 PORT_NAME = '/dev/ttyUSB0'
 lidar = RPLidar(PORT_NAME)
 
@@ -25,19 +23,15 @@ for measurment in lidar.iter_measurments():
 
     theta = float(newline[2])
     distance = float(newline[3])
-    if(distance > 0):
-        if(int(preAngle) is not int(theta)):
-            preAngle = theta        
-            x_coord = math.cos(math.radians(theta)) * distance
-            y_coord = math.sin(math.radians(theta)) * distance * -1
-            print("theta = " + str(theta) + "    dist = " + str(distance))
-            print("x = " + str(x_coord)+ "      y = " + str(y_coord) + '\n')
-                
-            y.append(y_coord)
-            x.append(x_coord)
-            time.sleep(0.08)    
-            counter = counter +1
-    if (counter == 500):
+    if(distance > 0):        
+        x_coord = math.cos(math.radians(theta)) * distance
+        y_coord = math.sin(math.radians(theta)) * distance * -1
+                        
+        y.append(y_coord)
+        x.append(x_coord)
+            
+        counter = counter +1
+    if (counter == 1000):
         break
 
 lidar.stop()
