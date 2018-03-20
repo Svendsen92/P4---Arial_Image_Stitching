@@ -3,9 +3,9 @@ import os
 from lib.database_manager import DatabaseManager
 from lib.Image_manager import image_manager
 from lib.imu import ImuReader
-from lib.Lidar import lidar
+from lib.Lidar import Lidar
 from lib.logger import Logger
-from lib.gps import GPS_Reader
+from lib.gps import GPSReader
 
 def drone_signal():
 	input()
@@ -21,10 +21,10 @@ if __name__ == '__main__':
 	log = Logger(file_path)
 	log.log('Initializing objects', level=1, days_to_remain=5)
 	imu = ImuReader()
-	lidar = lidar()
-	image_manager = image_manager()
+	lidar = Lidar()
+	image_manager = ImageManager()
 	db_manager = DatabaseManager()
-	gps = GPS_Reader()
+	gps = GPSReader()
 	savePath = os.path.dirname(__file__)
 	picID = "test_"
 	iteration = 1
@@ -34,10 +34,10 @@ if __name__ == '__main__':
 
 		if drone_signal() is True:
 			log.log('Drone signal received', level=1, days_to_remain=5)
-			status = image_manager.aquirePicture(picID, savePath, iteration)['status']
+			status = image_manager.aquire_picture(picID, savePath, iteration)['status']
 
 			while not status:
-				status = image_manager.aquirePicture(picID, savePath, iteration)['status']
+				status = image_manager.aquire_picture(picID, savePath, iteration)['status']
 				log.log('Image not successfully acquired', level=2, days_to_remain=5)
 
 			log.log('Image successfully acquired', level=2, days_to_remain=5)
@@ -46,7 +46,7 @@ if __name__ == '__main__':
 			euler = imu.get_euler()
 			distance = lidar.distance()
 			height = gps.get_position()['z']
-			image_name = image_manager.aquirePicture()['name']
+			image_name = image_manager.aquire_picture()['name']
 			log.log('Sensor data acquired', level=1, days_to_remain=5)
 
 			insert_meta_data(1, image_name, gravity['x'], gravity['y'],
