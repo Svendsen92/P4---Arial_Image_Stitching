@@ -11,7 +11,8 @@ David Michalik, Ivelin Penchev & Simone Jensen.
 import logging
 import sys
 import time
-
+import os
+from logger import Logger
 from Adafruit_BNO055 import BNO055
 
 
@@ -28,6 +29,11 @@ class ImuReader():
             raise RuntimeError('Failed to initialize BNO055! Is the sensor' +
                                'connected?')
 
+        file_path = os.path.dirname(__file__)
+        file_path = os.path.abspath(os.path.join(file_path, os.pardir))
+        file_path = os.path.abspath(os.path.join(file_path, "log.log"))
+        self.log = Logger(file_path, logger_label="IMU")
+
         self.check_status()
         self.diagnostics()
 
@@ -35,22 +41,31 @@ class ImuReader():
         """."""
         # Print system status and self test result.
         status, self_test, error = self.bno.get_system_status()
-        print('System status: {0}'.format(status))
-        print('Self test result (0x0F is normal): 0x{0:02X}'.format(self_test))
+        self.log.log('System status: {0}'.format(status), level=3,
+                     days_to_remain=1)
+        self.log.log('Self test result (0x0F is normal):' +
+                     ' 0x{0:02X}'.format(self_test), level=3, days_to_remain=1)
         # Print out an error if system status is in error mode.
         if status == 0x01:
-            print('System error: {0}'.format(error))
-            print('See datasheet section 4.3.59 for the meaning.')
+            self.log.log('System error: {0}'.format(error), level=3,
+                         days_to_remain=1)
+            self.log.log('See datasheet section 4.3.59 for the meaning.',
+                         level=3, days_to_remain=1)
 
     def diagnostics(self):
         """."""
         # Print BNO055 software revision and other diagnostic data.
         sw, bl, accel, mag, gyro = self.bno.get_revision()
-        print('Software version:   {0}'.format(sw))
-        print('Bootloader version: {0}'.format(bl))
-        print('Accelerometer ID:   0x{0:02X}'.format(accel))
-        print('Magnetometer ID:    0x{0:02X}'.format(mag))
-        print('Gyroscope ID:       0x{0:02X}\n'.format(gyro))
+        self.log.log('Software version:   {0}'.format(sw), level=3,
+                     days_to_remain=1)
+        self.log.log('Bootloader version: {0}'.format(bl), level=3,
+                     days_to_remain=1)
+        self.log.log('Accelerometer ID:   0x{0:02X}'.format(accel), level=3,
+                     days_to_remain=1)
+        self.log.log('Magnetometer ID:    0x{0:02X}'.format(mag), level=3,
+                     days_to_remain=1)
+        self.log.log('Gyroscope ID:       0x{0:02X}\n'.format(gyro), level=3,
+                     days_to_remain=1)
 
     def get_calibration_status(self):
         """."""
@@ -61,16 +76,19 @@ class ImuReader():
                     if mag is 3:
                         return True
                     else:
-                        print("Magnotemeter is not calibrated")
+                        self.log.log("Magnotemeter is not calibrated", level=3,
+                                     days_to_remain=1)
                         return False
                 else:
-                    print("Accelerometer is not calibrated")
+                    self.log.log("Accelerometer is not calibrated", level=3,
+                                 days_to_remain=1)
                     return False
             else:
-                print("Gyroscope is not calibrated")
+                self.log.log("Gyroscope is not calibrated", level=3,
+                             days_to_remain=1)
                 return False
         else:
-            print("System is not calibrated")
+            self.log.log("System is not calibrated", level=3, days_to_remain=1)
             return False
 
     def get_gravity(self):
@@ -118,20 +136,27 @@ class ImuReader():
 
 
 if __name__ == '__main__':
+    file_path = os.path.dirname(__file__)
+    file_path = os.path.abspath(os.path.join(file_path, os.pardir))
+    file_path = os.path.abspath(os.path.join(file_path, "log.log"))
+    log = Logger(file_path, logger_label="IMU")
+
     # Enable verbose debug logging if -v is passed as a parameter.
     if len(sys.argv) == 2 and sys.argv[1].lower() == '-v':
         logging.basicConfig(level=logging.DEBUG)
 
     imu = ImuReader()
-    print('Reading BNO055 data, press Ctrl-C to quit...')
+    log.log('Reading BNO055 data, press Ctrl-C to quit...', level=3,
+            days_to_remain=1)
 
     while True:
         gravity = imu.get_gravity()
         euler = imu.get_euler()
-        print('Heading={0:0.2F} '.format(euler['heading']) +
-              'Roll={0:0.2F} '.format(euler['roll']) +
-              'Pitch={0:0.2F}'.format(euler['pitch']) +
-              '\tX={} '.format(gravity['x']) +
-              'Y={} '.format(gravity['y']) +
-              'Z={}'.format(gravity['z']))
+        log.log('Heading={0:0.2F} '.format(euler['heading']) +
+                '\nRoll={0:0.2F} '.format(euler['roll']) +
+                '\nPitch={0:0.2F}'.format(euler['pitch']) +
+                '\nX={} '.format(gravity['x']) +
+                '\tY={} '.format(gravity['y']) +
+                '\tZ={}'.format(gravity['z']), level=3,
+                days_to_remain=1)
         time.sleep(1)
